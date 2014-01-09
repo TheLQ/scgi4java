@@ -20,11 +20,18 @@ import org.testng.annotations.Test;
  */
 public class SCGIServerTest {
 	@Test
-	public void parseRequestTest() throws IOException {
+	public void parseRequestHeadersTest() throws IOException {
 		Map<String, String> parsedHeaders = SCGIServer.parseRequestHeaders(new ByteArrayInputStream(TestUtils.REQUEST_RAW.getBytes()), Charset.defaultCharset());
 		
 		//Make sure there are no differences
 		MapDifference<String, String> headerDiff = Maps.difference(parsedHeaders, TestUtils.REQUEST_HEADERS);
 		Assert.assertEquals(headerDiff.entriesDiffering().size(), 0, "Headers do not match given " + headerDiff);
+	}
+	
+	@Test
+	public void makeResponseTest() {
+		String createdResponse = SCGIServer.makeResponse(TestUtils.RESPONSE_BODY, TestUtils.RESPONSE_HEADERS);
+		
+		Assert.assertEquals(createdResponse, TestUtils.RESPONSE_RAW, "Response doesn't match given");
 	}
 }

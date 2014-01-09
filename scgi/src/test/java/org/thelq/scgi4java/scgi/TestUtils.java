@@ -65,4 +65,16 @@ public class TestUtils {
 			.put("HTTP_CACHE_CONTROL", "no-cache")
 			.build();
 	public static final String REQUEST_BODY = "<methodCall><methodName>system.library_version</methodName><params/></methodCall>";
+	public static final String RESPONSE_RAW = "Status: 200 OK\r\n"
+			+ "Content-Type: text/plain\r\n"
+			+ "Content-Length: 5\r\n"
+			+ "Test-Header: flib\r\n"
+			+ "OtherHeader: flab\r\n"
+			+ "\r\n"
+			+ "ab cd";
+	public static final ImmutableMap<String, String> RESPONSE_HEADERS = ImmutableMap.<String, String>builder()
+			.put("Test-Header", "flib")
+			.put("OtherHeader", "flab")
+			.build();
+	public static final String RESPONSE_BODY = "ab cd";
 }
