@@ -8,8 +8,10 @@ package org.thelq.scgi4java.scgi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.NonNull;
 
 /**
  *
@@ -19,14 +21,15 @@ public class SCGIServer {
 	public static Map<String, String> parseRequest(InputStream input) throws IOException {
 		return parseRequest(Charset.defaultCharset(), input);
 	}
-	
+
 	/**
 	 * Read the <a href="http://python.ca/scgi/protocol.txt">SCGI</a> request
 	 * headers.<br>
 	 * After the headers had been loaded, you can read the body of the request
 	 * manually from the same {@code input} stream:
 	 * <p>
-	 * <pre>
+	 * <
+	 * pre>
 	 * // Load the SCGI headers.
 	 * Socket clientSocket = socket.accept();
 	 * BufferedInputStream bis = new BufferedInputStream(
@@ -40,7 +43,7 @@ public class SCGIServer {
 	 * an efficient (buffered) input stream.
 	 * @return strings passed via the SCGI request.
 	 */
-	public static Map<String, String> parseRequest(Charset charset, InputStream input) throws IOException {
+	public static Map<String, String> parseRequest(@NonNull Charset charset, @NonNull InputStream input) throws IOException {
 		//Parse header length
 		StringBuilder headerLengthRaw = new StringBuilder(4);
 		int headerLengthInt = -1;
@@ -66,7 +69,7 @@ public class SCGIServer {
 		String headerString = new String(headerBuffer, charset);
 		if (input.read() != ',')
 			throw new SCGIException("Wrong SCGI header length: " + headerLengthRaw);
-		
+
 		//Parse headers
 		Map<String, String> env = new LinkedHashMap<String, String>();
 		int headerPos = 0;
@@ -79,5 +82,28 @@ public class SCGIServer {
 			headerPos = valueEndSep + 1;
 		}
 		return env;
+	}
+
+	public static String makeResponse(@NonNull String body) {
+		return makeResponse(body, Collections.EMPTY_MAP);
+	}
+
+	public static String makeResponse(@NonNull String body, @NonNull Map<String, String> extraHeaders) {
+		//Start with our default values if they don't exist already
+		StringBuilder resp = new StringBuilder();
+		if (!extraHeaders.containsKey("Status"))
+			resp.append(makeResponseHeader("Status", "200 OK"));
+		if (!extraHeaders.containsKey("Content-Type"))
+			resp.append(makeResponseHeader("Content-Type", "text/plain"));
+
+		//Add users values
+		for (Map.Entry<String, String> curHeader : extraHeaders.entrySet())
+			resp.append(makeResponseHeader(curHeader.getKey(), curHeader.getValue()));
+
+		return resp.toString();
+	}
+
+	protected static String makeResponseHeader(String key, String value) {
+		return key + ": " + value + "\r\n";
 	}
 }
