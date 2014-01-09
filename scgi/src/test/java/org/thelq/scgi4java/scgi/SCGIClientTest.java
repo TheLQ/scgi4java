@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 public class SCGIClientTest {
 	@Test
 	public void makeRequestTest() {
-		String requestCreated = SCGIClient.makeRequest(TestUtils.REQUEST_HEADERS, TestUtils.REQUEST_BODY);
+		String requestCreated = SCGIClient.makeRequest(TestUtils.REQUEST_BODY, TestUtils.REQUEST_HEADERS);
 
 		Assert.assertEquals(TestUtils.REQUEST_RAW, requestCreated, "Generated request doesn't match given");
 	}
