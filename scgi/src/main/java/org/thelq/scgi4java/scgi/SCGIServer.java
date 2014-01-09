@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.thelq.scgi4java.scgi;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -33,7 +31,7 @@ public class SCGIServer {
 	 * // Load the SCGI headers.
 	 * Socket clientSocket = socket.accept();
 	 * BufferedInputStream bis = new BufferedInputStream(
-	 * 		clientSocket.getInputStream(), 4096);
+	 * clientSocket.getInputStream(), 4096);
 	 * HashMap&lt;String, String&gt; env = SCGI.parse(bis);
 	 * // Read the body of the request.
 	 * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
@@ -44,39 +42,43 @@ public class SCGIServer {
 	 * @return strings passed via the SCGI request.
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String, String> parse(InputStream input) throws IOException {
-		StringBuilder lengthString = new StringBuilder(12);
-		String headers = "";
-		for (;;) {
-			char ch = (char) input.read();
-			if (ch >= '0' && ch <= '9')
-				lengthString.append(ch);
-			else if (ch == ':') {
-				int length = Integer.parseInt(lengthString.toString());
-				byte[] headersBuf = new byte[length];
-				int read = input.read(headersBuf);
-				if (read != headersBuf.length)
-					throw new SCGIException("Couldn't read all the headers ("
-							+ length + ").");
-				headers = ISO_8859_1.decode(ByteBuffer.wrap(headersBuf))
-						.toString();
-				if (input.read() != ',')
-					throw new SCGIException("Wrong SCGI header length: "
-							+ lengthString);
+	public static Map<String, String> parseRequest(Charset charset, InputStream input) throws IOException {
+		//Parse header length
+		StringBuilder headerLengthRaw = new StringBuilder(4);
+		int headerLengthInt = -1;
+		char curChar;
+		while ((curChar = (char) input.read()) != -1)
+			if (curChar >= '0' && curChar <= '9')
+				headerLengthRaw.append(curChar);
+			else if (curChar == ':') {
+				headerLengthInt = Integer.parseInt(headerLengthRaw.toString());
 				break;
 			} else {
-				lengthString.append(ch);
-				throw new SCGIException("Wrong SCGI header length: "
-						+ lengthString);
+				headerLengthRaw.append(curChar);
+				throw new SCGIException("Unexpected character in SCGI header length: " + headerLengthRaw);
 			}
-		}
-		Map<String, String> env = new HashMap<String, String>();
-		while (headers.length() != 0) {
-			int sep1 = headers.indexOf(0);
-			int sep2 = headers.indexOf(0, sep1 + 1);
-			env.put(headers.substring(0, sep1), headers.substring(sep1 + 1,
-					sep2));
-			headers = headers.substring(sep2 + 1);
+
+		//Read headers
+		if (headerLengthInt == -1)
+			throw new SCGIException("Could not get SCGI header length: " + headerLengthRaw);
+		byte[] headerBuffer = new byte[headerLengthInt];
+		int readLength = input.read(headerBuffer);
+		if (readLength != headerLengthInt)
+			throw new SCGIException("Couldn't read all the headers (" + headerLengthInt + ").");
+		String headerString = new String(headerBuffer, charset);
+		if (input.read() != ',')
+			throw new SCGIException("Wrong SCGI header length: " + headerLengthRaw);
+		
+		//Parse headers
+		Map<String, String> env = new LinkedHashMap<String, String>();
+		int headerPos = 0;
+		while (headerPos < headerString.length()) {
+			int valueStartSep = headerString.indexOf(0, headerPos);
+			String key = headerString.substring(headerPos, valueStartSep);
+			int valueEndSep = headerString.indexOf(0, valueStartSep + 1);
+			String value = headerString.substring(valueStartSep + 1, valueEndSep);
+			env.put(key, value);
+			headerPos = valueEndSep + 1;
 		}
 		return env;
 	}
