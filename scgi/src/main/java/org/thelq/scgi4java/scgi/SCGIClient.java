@@ -6,20 +6,33 @@
 package org.thelq.scgi4java.scgi;
 
 import java.util.Map;
+import lombok.NonNull;
 
 /**
  *
  * @author Leon
  */
 public class SCGIClient {
-	public static String makeRequest(Map<String, String> header, String body) {
-		String res = "CONTENT_LENGTH\0" + (body != null ? body.length() : 0)
-				+ "\0SCGI\0" + "1\0";
-		if (header != null)
-			for (Map.Entry<String, String> entry : header.entrySet())
-				res += entry.getKey() + '\0' + entry.getValue() + '\0';
-		String size = new Integer(res.getBytes().length) + ":";
-		res += "," + body;
-		return size + res;
+	public static String makeRequest(@NonNull Map<String, String> header, @NonNull String body) {
+		//Start building request with required SCGI headers
+		StringBuilder req = new StringBuilder()
+				.append(makeHeaderField("CONTENT_LENGTH", Integer.toString(body.length())))
+				.append(makeHeaderField("SCGI", "1"));
+
+		//Add user's headers
+		for (Map.Entry<String, String> entry : header.entrySet())
+			req.append(makeHeaderField(entry.getKey(), entry.getValue()));
+
+		//Prepend header length
+		req.insert(0, ':');
+		req.insert(0, req.length() - 1);
+
+		//Add body and send
+		req.append(',').append(body);
+		return req.toString();
+	}
+
+	protected static String makeHeaderField(String key, String value) {
+		return key + "\0" + value + "\0";
 	}
 }
