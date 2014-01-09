@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 public class SCGIServerTest {
 	@Test
 	public void parseRequestTest() throws IOException {
-		Map<String, String> parsedHeaders = SCGIServer.parseRequest(Charset.defaultCharset(), new ByteArrayInputStream(TestUtils.REQUEST_RAW.getBytes()));
+		Map<String, String> parsedHeaders = SCGIServer.parseRequest(new ByteArrayInputStream(TestUtils.REQUEST_RAW.getBytes()), Charset.defaultCharset());
 		
 		//Make sure there are no differences
 		MapDifference<String, String> headerDiff = Maps.difference(parsedHeaders, TestUtils.REQUEST_HEADERS);

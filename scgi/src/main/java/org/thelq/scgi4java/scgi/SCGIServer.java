@@ -19,7 +19,7 @@ import lombok.NonNull;
  */
 public class SCGIServer {
 	public static Map<String, String> parseRequest(InputStream input) throws IOException {
-		return parseRequest(Charset.defaultCharset(), input);
+		return parseRequest(input, Charset.defaultCharset());
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class SCGIServer {
 	 * an efficient (buffered) input stream.
 	 * @return strings passed via the SCGI request.
 	 */
-	public static Map<String, String> parseRequest(@NonNull Charset charset, @NonNull InputStream input) throws IOException {
+	public static Map<String, String> parseRequest(@NonNull InputStream input, @NonNull Charset charset) throws IOException {
 		//Parse header length
 		StringBuilder headerLengthRaw = new StringBuilder(4);
 		int headerLengthInt = -1;
