@@ -98,6 +98,8 @@ public class SCGIServer {
 			resp.append(makeResponseHeader("Status", "200 OK"));
 		if (!extraHeaders.containsKey("Content-Type"))
 			resp.append(makeResponseHeader("Content-Type", "text/plain"));
+		if (!extraHeaders.containsKey("Content-Length"))
+			resp.append(makeResponseHeader("Content-Length", Integer.toString(body.length())));
 
 		//Add users values
 		for (Map.Entry<String, String> curHeader : extraHeaders.entrySet())
