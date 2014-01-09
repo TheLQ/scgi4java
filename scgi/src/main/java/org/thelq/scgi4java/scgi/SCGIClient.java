@@ -16,12 +16,12 @@ public class SCGIClient {
 	public static String makeRequest(@NonNull Map<String, String> header, @NonNull String body) {
 		//Start building request with required SCGI headers
 		StringBuilder req = new StringBuilder()
-				.append(makeHeaderField("CONTENT_LENGTH", Integer.toString(body.length())))
-				.append(makeHeaderField("SCGI", "1"));
+				.append(makeRequestHeader("CONTENT_LENGTH", Integer.toString(body.length())))
+				.append(makeRequestHeader("SCGI", "1"));
 
 		//Add user's headers
 		for (Map.Entry<String, String> entry : header.entrySet())
-			req.append(makeHeaderField(entry.getKey(), entry.getValue()));
+			req.append(makeRequestHeader(entry.getKey(), entry.getValue()));
 
 		//Prepend header length
 		req.insert(0, ':');
@@ -31,8 +31,10 @@ public class SCGIClient {
 		req.append(',').append(body);
 		return req.toString();
 	}
+	
+	
 
-	protected static String makeHeaderField(String key, String value) {
+	protected static String makeRequestHeader(String key, String value) {
 		return key + "\0" + value + "\0";
 	}
 }
