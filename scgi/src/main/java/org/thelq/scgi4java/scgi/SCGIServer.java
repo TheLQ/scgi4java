@@ -18,6 +18,7 @@ import lombok.NonNull;
  * @author Leon
  */
 public class SCGIServer {
+	protected static final String RESPONSE_LINEEND = "\r\n";
 	public static Map<String, String> parseRequest(InputStream input) throws IOException {
 		return parseRequest(input, Charset.defaultCharset());
 	}
@@ -99,11 +100,14 @@ public class SCGIServer {
 		//Add users values
 		for (Map.Entry<String, String> curHeader : extraHeaders.entrySet())
 			resp.append(makeResponseHeader(curHeader.getKey(), curHeader.getValue()));
+		
+		resp.append(RESPONSE_LINEEND);
+		resp.append(body);
 
 		return resp.toString();
 	}
 
 	protected static String makeResponseHeader(String key, String value) {
-		return key + ": " + value + "\r\n";
+		return key + ": " + value + RESPONSE_LINEEND;
 	}
 }
