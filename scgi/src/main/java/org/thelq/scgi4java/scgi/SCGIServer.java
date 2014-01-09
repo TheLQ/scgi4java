@@ -7,6 +7,7 @@ package org.thelq.scgi4java.scgi;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -19,6 +20,7 @@ import lombok.NonNull;
  */
 public class SCGIServer {
 	protected static final String RESPONSE_LINEEND = "\r\n";
+
 	public static Map<String, String> parseRequest(InputStream input) throws IOException {
 		return parseRequest(input, Charset.defaultCharset());
 	}
@@ -100,7 +102,7 @@ public class SCGIServer {
 		//Add users values
 		for (Map.Entry<String, String> curHeader : extraHeaders.entrySet())
 			resp.append(makeResponseHeader(curHeader.getKey(), curHeader.getValue()));
-		
+
 		resp.append(RESPONSE_LINEEND);
 		resp.append(body);
 
@@ -109,5 +111,13 @@ public class SCGIServer {
 
 	protected static String makeResponseHeader(String key, String value) {
 		return key + ": " + value + RESPONSE_LINEEND;
+	}
+
+	public static void sendResponse(@NonNull String body, @NonNull Map<String, String> extraHeaders, OutputStream output) throws IOException {
+		sendResponse(body, extraHeaders, output, Charset.defaultCharset());
+	}
+
+	public static void sendResponse(@NonNull String body, @NonNull Map<String, String> extraHeaders, OutputStream output, Charset charset) throws IOException {
+		output.write(makeResponse(body, extraHeaders).getBytes(charset));
 	}
 }
