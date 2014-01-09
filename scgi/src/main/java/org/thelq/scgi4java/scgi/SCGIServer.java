@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -43,7 +44,7 @@ public class SCGIServer {
 	 * @return strings passed via the SCGI request.
 	 */
 	@SuppressWarnings("unchecked")
-	public static HashMap parse(InputStream input) throws IOException {
+	public static Map<String, String> parse(InputStream input) throws IOException {
 		StringBuilder lengthString = new StringBuilder(12);
 		String headers = "";
 		for (;;) {
@@ -69,7 +70,7 @@ public class SCGIServer {
 						+ lengthString);
 			}
 		}
-		HashMap<String, String> env = new HashMap<String, String>();
+		Map<String, String> env = new HashMap<String, String>();
 		while (headers.length() != 0) {
 			int sep1 = headers.indexOf(0);
 			int sep2 = headers.indexOf(0, sep1 + 1);
