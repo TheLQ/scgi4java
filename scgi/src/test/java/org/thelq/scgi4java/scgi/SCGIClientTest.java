@@ -7,7 +7,6 @@ package org.thelq.scgi4java.scgi;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import static org.thelq.scgi4java.scgi.SCGIClient.makeRequest;
 
 /**
  *
@@ -16,7 +15,7 @@ import static org.thelq.scgi4java.scgi.SCGIClient.makeRequest;
 public class SCGIClientTest {
 	@Test
 	public void makeRequestTest() {
-		String requestCreated = makeRequest(TestUtils.REQUEST_HEADERS, TestUtils.REQUEST_BODY);
+		String requestCreated = SCGIClient.makeRequest(TestUtils.REQUEST_HEADERS, TestUtils.REQUEST_BODY);
 
 		Assert.assertEquals(TestUtils.REQUEST_RAW, requestCreated, "Generated request doesn't match given");
 	}
