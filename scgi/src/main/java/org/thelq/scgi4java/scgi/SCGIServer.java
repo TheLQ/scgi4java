@@ -44,7 +44,7 @@ public class SCGIServer {
 		StringBuilder headerLengthRaw = new StringBuilder(4);
 		int headerLengthInt = -1;
 		char curChar;
-		while ((curChar = (char) input.read()) != -1)
+		while ((curChar = (char) input.read()) != (char) -1)
 			if (curChar >= '0' && curChar <= '9')
 				headerLengthRaw.append(curChar);
 			else if (curChar == ':') {
