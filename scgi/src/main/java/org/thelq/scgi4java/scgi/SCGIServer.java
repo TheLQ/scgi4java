@@ -16,11 +16,10 @@ import java.util.Map;
  * @author Leon
  */
 public class SCGIServer {
-	/**
-	 * Used to decode the headers.
-	 */
-	public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
-
+	public static Map<String, String> parseRequest(InputStream input) throws IOException {
+		return parseRequest(Charset.defaultCharset(), input);
+	}
+	
 	/**
 	 * Read the <a href="http://python.ca/scgi/protocol.txt">SCGI</a> request
 	 * headers.<br>
@@ -41,7 +40,6 @@ public class SCGIServer {
 	 * an efficient (buffered) input stream.
 	 * @return strings passed via the SCGI request.
 	 */
-	@SuppressWarnings("unchecked")
 	public static Map<String, String> parseRequest(Charset charset, InputStream input) throws IOException {
 		//Parse header length
 		StringBuilder headerLengthRaw = new StringBuilder(4);
