@@ -5,6 +5,7 @@
  */
 package org.thelq.scgi4java.scgi;
 
+import java.util.Collections;
 import java.util.Map;
 import lombok.NonNull;
 
@@ -13,7 +14,11 @@ import lombok.NonNull;
  * @author Leon
  */
 public class SCGIClient {
-	public static String makeRequest(@NonNull Map<String, String> header, @NonNull String body) {
+	public static String makeRequest(@NonNull String body) {
+		return makeRequest(body, Collections.EMPTY_MAP);
+	}
+
+	public static String makeRequest(@NonNull String body, @NonNull Map<String, String> header) {
 		//Start building request with required SCGI headers
 		StringBuilder req = new StringBuilder()
 				.append(makeRequestHeader("CONTENT_LENGTH", Integer.toString(body.length())))
@@ -31,8 +36,6 @@ public class SCGIClient {
 		req.append(',').append(body);
 		return req.toString();
 	}
-	
-	
 
 	protected static String makeRequestHeader(String key, String value) {
 		return key + "\0" + value + "\0";
