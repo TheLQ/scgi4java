@@ -21,10 +21,11 @@ import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
 import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import sun.misc.IOUtils;
 
 /**
  *
@@ -33,11 +34,15 @@ import org.testng.annotations.Test;
 public class SCGIServerTest {
 	@Test
 	public void parseRequestHeadersTest() throws IOException {
-		Map<String, String> parsedHeaders = SCGIServer.parseRequestHeaders(new ByteArrayInputStream(TestUtils.REQUEST_RAW.getBytes()), Charset.defaultCharset());
+		InputStream requestStream = new ByteArrayInputStream(TestUtils.REQUEST_RAW.getBytes());
+		Map<String, String> parsedHeaders = SCGIServer.parseRequestHeaders(requestStream);
 		
 		//Make sure there are no differences
 		MapDifference<String, String> headerDiff = Maps.difference(parsedHeaders, TestUtils.REQUEST_HEADERS);
 		Assert.assertEquals(headerDiff.entriesDiffering().size(), 0, "Headers do not match given " + headerDiff);
+		
+		//Verify body
+		Assert.assertEquals(TestUtils.inputToString(requestStream), TestUtils.REQUEST_BODY, "Body does not match given");
 	}
 	
 	@Test

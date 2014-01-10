@@ -55,10 +55,6 @@ public class SCGIClientTest {
 		Assert.assertEquals(headerDiff.entriesDiffering().size(), 0, "Headers do not match given" + headerDiff);
 		
 		//Read body
-		StringBuilder body = new StringBuilder();
-		int curChar;
-		while((curChar = responseStream.read()) != -1)
-			body.append((char)curChar);
-		Assert.assertEquals(body.toString(), TestUtils.RESPONSE_BODY, "Body does not match given");
+		Assert.assertEquals(TestUtils.inputToString(responseStream), TestUtils.RESPONSE_BODY, "Body does not match given");
 	}
 }

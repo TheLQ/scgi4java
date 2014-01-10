@@ -18,6 +18,8 @@
 package org.thelq.scgi4java.scgi;
 
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -89,4 +91,12 @@ public class TestUtils {
 			.put("OtherHeader", "flab")
 			.build();
 	public static final String RESPONSE_BODY = "ab cd";
+	
+	public static String inputToString(InputStream input) throws IOException {
+		StringBuilder body = new StringBuilder();
+		int curChar;
+		while((curChar = input.read()) != -1)
+			body.append((char)curChar);
+		return body.toString();
+	}
 }
