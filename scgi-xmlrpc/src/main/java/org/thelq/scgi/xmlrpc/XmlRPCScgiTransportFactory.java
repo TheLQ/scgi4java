@@ -17,6 +17,7 @@
  */
 package org.thelq.scgi.xmlrpc;
 
+import java.nio.charset.Charset;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcTransport;
 import org.apache.xmlrpc.client.XmlRpcTransportFactoryImpl;
@@ -26,11 +27,18 @@ import org.apache.xmlrpc.client.XmlRpcTransportFactoryImpl;
  * @author Leon
  */
 public class XmlRPCScgiTransportFactory extends XmlRpcTransportFactoryImpl {
+	protected final Charset charset;
 	public XmlRPCScgiTransportFactory(XmlRpcClient pClient) {
 		super(pClient);
+		charset = Charset.defaultCharset();
+	}
+
+	public XmlRPCScgiTransportFactory(XmlRpcClient pClient, Charset charset) {
+		super(pClient);
+		this.charset = charset;
 	}
 
 	public XmlRpcTransport getTransport() {
-		return new XmlRpcScgiTransport(getClient());
+		return new XmlRpcScgiTransport(getClient(), charset);
 	}
 }

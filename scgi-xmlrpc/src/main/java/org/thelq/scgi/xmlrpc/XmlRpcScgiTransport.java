@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcRequest;
 import org.apache.xmlrpc.client.XmlRpcClient;
@@ -37,10 +38,12 @@ import org.xml.sax.SAXException;
  * @author Leon
  */
 public class XmlRpcScgiTransport extends XmlRpcStreamTransport {
+	protected final Charset charset;
 	protected Socket rtSocket;
 
-	public XmlRpcScgiTransport(XmlRpcClient pClient) {
+	public XmlRpcScgiTransport(XmlRpcClient pClient, Charset charset) {
 		super(pClient);
+		this.charset = charset;
 	}
 
 	@Override
