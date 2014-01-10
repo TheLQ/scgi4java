@@ -1,2 +1,3 @@
 syntax: glob
 scgi/target/**
+target/**
