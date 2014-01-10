@@ -83,6 +83,8 @@ public class SCGIClient {
 					valBuilder.delete(0, valBuilder.length());
 				} else if(lastKey == null) {
 					//No key and no value, this is the blank line before the body
+					//Read next newline char to finish line
+					input.read();
 					break;
 				}
 			} else if(curChar == '\n') {
