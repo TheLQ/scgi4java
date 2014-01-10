@@ -53,5 +53,12 @@ public class SCGIClientTest {
 				.build();
 		MapDifference<String, String> headerDiff = Maps.difference(parsedResponse, fullHeaders);
 		Assert.assertEquals(headerDiff.entriesDiffering().size(), 0, "Headers do not match given" + headerDiff);
+		
+		//Read body
+		StringBuilder body = new StringBuilder();
+		int curChar;
+		while((curChar = responseStream.read()) != -1)
+			body.append((char)curChar);
+		Assert.assertEquals(body.toString(), TestUtils.RESPONSE_BODY, "Body does not match given");
 	}
 }
