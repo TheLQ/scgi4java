@@ -57,11 +57,11 @@ public class SCGIClient {
 		return key + "\0" + value + "\0";
 	}
 	
-	protected static Map<String, String> parseResponse(InputStream input) throws IOException {
+	public static Map<String, String> parseResponse(InputStream input) throws IOException {
 		return parseResponse(input, Charset.defaultCharset());
 	}
 	
-	protected static Map<String, String> parseResponse(InputStream input, Charset charset) throws IOException {
+	public static Map<String, String> parseResponse(InputStream input, Charset charset) throws IOException {
 		Map<String, String> responseHeaders = new HashMap<String, String>();
 		
 		StringBuilder valBuilder = new StringBuilder();
