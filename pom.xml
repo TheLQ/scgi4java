@@ -68,6 +68,7 @@
 
 	<modules>
 		<module>scgi</module>
+		<module>scgi-xmlrpc</module>
 	</modules>
 
 	<!--
