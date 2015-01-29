@@ -3,11 +3,11 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.thelq</groupId>
+		<groupId>net.thelq</groupId>
 		<artifactId>scgi4java</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.thelq.scgi4java</groupId>
+	<groupId>net.thelq.scgi4java</groupId>
 	<artifactId>scgi-xmlrpc</artifactId>
 	<name>scgi-xmlrpc</name>
 	<properties>

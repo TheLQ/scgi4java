@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thelq.scgi.xmlrpc;
+package net.thelq.scgi.xmlrpc;
 
 import java.nio.charset.Charset;
 import org.apache.xmlrpc.client.XmlRpcClient;

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thelq.scgi4java.scgi;
+package net.thelq.scgi4java.scgi;
 
 import java.io.IOException;
 
