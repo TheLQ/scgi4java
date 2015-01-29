@@ -102,14 +102,14 @@ public class SCGIServer {
 	}
 
 	/**
-	 * Convenience method for {@link #makeResponse(java.lang.String, java.util.Map)
+	 * Convenience method for {@link #createResponse(java.lang.String, java.util.Map)
 	 * } with no extra headers
 	 *
 	 * @param body Text to send. Cannot be null
 	 * @return
 	 */
-	public static String makeResponse(@Nonnull String body) {
-		return makeResponse(body, Collections.EMPTY_MAP);
+	public static String createResponse(@Nonnull String body) {
+		return createResponse(body, Collections.EMPTY_MAP);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class SCGIServer {
 	 * @param extraHeaders Headers to send. Cannot be null
 	 * @return A full SCGI response
 	 */
-	public static String makeResponse(@Nonnull String body, @Nonnull Map<String, String> extraHeaders) {
+	public static String createResponse(@Nonnull String body, @Nonnull Map<String, String> extraHeaders) {
 		if (body == null)
 			throw new NullPointerException("body cannot be null");
 		if (extraHeaders == null)
@@ -199,6 +199,6 @@ public class SCGIServer {
 		if (charset == null)
 			throw new NullPointerException("charset cannot be null");
 
-		output.write(makeResponse(body, extraHeaders).getBytes(charset));
+		output.write(createResponse(body, extraHeaders).getBytes(charset));
 	}
 }

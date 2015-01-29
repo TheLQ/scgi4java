@@ -65,7 +65,7 @@ public class XmlRpcScgiTransport extends XmlRpcStreamTransport {
 
 		//Write SCGI request to socket
 		OutputStreamWriter rtWrite = new OutputStreamWriter(rtSocket.getOutputStream());
-		rtWrite.write(SCGIClient.makeRequest(reqOutput.toString()));
+		rtWrite.write(SCGIClient.createRequest(reqOutput.toString()));
 		rtWrite.flush();
 	}
 

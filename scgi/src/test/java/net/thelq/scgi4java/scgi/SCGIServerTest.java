@@ -46,7 +46,7 @@ public class SCGIServerTest {
 
 	@Test
 	public void makeResponseTest() {
-		String createdResponse = SCGIServer.makeResponse(TestUtils.RESPONSE_BODY, TestUtils.RESPONSE_HEADERS);
+		String createdResponse = SCGIServer.createResponse(TestUtils.RESPONSE_BODY, TestUtils.RESPONSE_HEADERS);
 
 		Assert.assertEquals(createdResponse, TestUtils.RESPONSE_RAW, "Response doesn't match given");
 	}

@@ -30,11 +30,11 @@ import javax.annotation.Nonnull;
  * @author Leon
  */
 public class SCGIClient {
-	public static String makeRequest(@Nonnull String body) {
-		return makeRequest(body, Collections.EMPTY_MAP);
+	public static String createRequest(@Nonnull String body) {
+		return createRequest(body, Collections.EMPTY_MAP);
 	}
 
-	public static String makeRequest(@Nonnull String body, @Nonnull Map<String, String> header) {
+	public static String createRequest(@Nonnull String body, @Nonnull Map<String, String> header) {
 		if (body == null)
 			throw new NullPointerException("body cannot be null");
 		if (header == null)
@@ -42,12 +42,12 @@ public class SCGIClient {
 
 		//Start building request with required SCGI headers
 		StringBuilder req = new StringBuilder()
-				.append(makeRequestHeader("CONTENT_LENGTH", Integer.toString(body.length())))
-				.append(makeRequestHeader("SCGI", "1"));
+				.append(createRequestHeader("CONTENT_LENGTH", Integer.toString(body.length())))
+				.append(createRequestHeader("SCGI", "1"));
 
 		//Add user's headers
 		for (Map.Entry<String, String> entry : header.entrySet())
-			req.append(makeRequestHeader(entry.getKey(), entry.getValue()));
+			req.append(createRequestHeader(entry.getKey(), entry.getValue()));
 
 		//Prepend header length
 		req.insert(0, ':');
@@ -58,7 +58,7 @@ public class SCGIClient {
 		return req.toString();
 	}
 
-	protected static String makeRequestHeader(String key, String value) {
+	protected static String createRequestHeader(String key, String value) {
 		if (key == null)
 			throw new NullPointerException("key cannot be null");
 		if (value == null)
