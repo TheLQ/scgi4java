@@ -71,6 +71,10 @@
 		<module>scgi-xmlrpc</module>
 	</modules>
 
+	<prerequisites>
+		<maven>3.0.4</maven>
+	</prerequisites>
+
 	<!--
 		Dependencies and Plugins
 	-->
@@ -78,7 +82,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.8.7</version>
+			<version>6.8.17</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
