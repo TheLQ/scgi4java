@@ -3,17 +3,17 @@
  *
  * This file is part of scgi4java.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, softwar
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.thelq.scgi4java.scgi;
 
@@ -28,17 +28,20 @@ import lombok.NonNull;
 
 /**
  * Utility class for SCGI servers
+ *
  * @author Leon
  */
 public class SCGIServer {
 	protected static final String RESPONSE_LINEEND = "\r\n";
 
 	/**
-	 * Convenience method for {@link #parseRequestHeaders(java.io.InputStream, java.nio.charset.Charset) }
+	 * Convenience method for {@link #parseRequestHeaders(java.io.InputStream, java.nio.charset.Charset)
+	 * }
 	 * with default charset
+	 *
 	 * @param input An input stream, preferably buffered
 	 * @return A map of header names and values
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static Map<String, String> parseRequestHeaders(InputStream input) throws IOException {
 		return parseRequestHeaders(input, Charset.defaultCharset());
@@ -46,7 +49,8 @@ public class SCGIServer {
 
 	/**
 	 * Read SCGI request headers from InputStream. After calling this method you
-	 * can read the body of the request manually from the same stream. 
+	 * can read the body of the request manually from the same stream.
+	 *
 	 * @param input An input stream, preferably buffered
 	 * @param charset Charset to use during decoding
 	 * @return A map of header names and values
@@ -93,22 +97,25 @@ public class SCGIServer {
 	}
 
 	/**
-	 * Convenience method for {@link #makeResponse(java.lang.String, java.util.Map) } with no extra headers
+	 * Convenience method for {@link #makeResponse(java.lang.String, java.util.Map)
+	 * } with no extra headers
+	 *
 	 * @param body Text to send. Cannot be null
-	 * @return 
+	 * @return
 	 */
 	public static String makeResponse(@NonNull String body) {
 		return makeResponse(body, Collections.EMPTY_MAP);
 	}
 
 	/**
-	 * Make an SCGI response. The following headers will be added if they do not exist
-	 * in extraHeaders:
+	 * Make an SCGI response. The following headers will be added if they do not
+	 * exist in extraHeaders:
 	 * <ul>
 	 * <li>Status: 200 OK</li>
 	 * <li>Content-Type: text/plain</li>
 	 * <li>Content-Length: [length of body]</li>
 	 * </ul>
+	 *
 	 * @param body Text to send. Cannot be null
 	 * @param extraHeaders Headers to send. Cannot be null
 	 * @return A full SCGI response
@@ -135,6 +142,7 @@ public class SCGIServer {
 
 	/**
 	 * Utility method to create a SCGI response header in the correct format
+	 *
 	 * @param key Header name
 	 * @param value Header value
 	 * @return Formatted header
@@ -144,12 +152,14 @@ public class SCGIServer {
 	}
 
 	/**
-	 * Convenience method for {@link #sendResponse(java.lang.String, java.util.Map, java.io.OutputStream, java.nio.charset.Charset) }
+	 * Convenience method for {@link #sendResponse(java.lang.String, java.util.Map, java.io.OutputStream, java.nio.charset.Charset)
+	 * }
 	 * with default charset
+	 *
 	 * @param body Text to send. Cannot be null
 	 * @param extraHeaders Additional headers to send. Cannot be null
 	 * @param output Stream to send response on. Cannot be null
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void sendResponse(@NonNull String body, @NonNull Map<String, String> extraHeaders, @NonNull OutputStream output) throws IOException {
 		sendResponse(body, extraHeaders, output, Charset.defaultCharset());
@@ -157,11 +167,12 @@ public class SCGIServer {
 
 	/**
 	 * Send an SCGI response on the specified OutputStream
+	 *
 	 * @param body Text to send. Cannot be null
 	 * @param extraHeaders Additional headers to send. Cannot be null
 	 * @param output Stream to send response on. Cannot be null
 	 * @param charset Charset of stream. Cannot be null
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void sendResponse(@NonNull String body, @NonNull Map<String, String> extraHeaders, @NonNull OutputStream output, @NonNull Charset charset) throws IOException {
 		output.write(makeResponse(body, extraHeaders).getBytes(charset));

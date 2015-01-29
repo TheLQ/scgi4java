@@ -3,17 +3,17 @@
  *
  * This file is part of scgi4java.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, softwar
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.thelq.scgi4java.scgi;
 
@@ -56,45 +56,45 @@ public class SCGIClient {
 	protected static String makeRequestHeader(String key, String value) {
 		return key + "\0" + value + "\0";
 	}
-	
+
 	public static Map<String, String> parseResponse(InputStream input) throws IOException {
 		return parseResponse(input, Charset.defaultCharset());
 	}
-	
+
 	public static Map<String, String> parseResponse(InputStream input, Charset charset) throws IOException {
 		Map<String, String> responseHeaders = new HashMap<String, String>();
-		
+
 		StringBuilder valBuilder = new StringBuilder();
 		String lastKey = null;
 		char curChar;
-		while ((curChar = (char) input.read()) != (char)-1) {
-			if(curChar == ':' && lastKey == null) {
+		while ((curChar = (char) input.read()) != (char) -1) {
+			if (curChar == ':' && lastKey == null) {
 				//Finished building the key name
 				lastKey = valBuilder.toString();
 				valBuilder.delete(0, valBuilder.length());
-			} else if(curChar == ' ' && valBuilder.length() == 0) {
+			} else if (curChar == ' ' && valBuilder.length() == 0) {
 				//This is the spacing after the key but before the value
-			} else if(curChar == '\r') {
+			} else if (curChar == '\r') {
 				//Finished building value
-				if(valBuilder.length() != 0) {
+				if (valBuilder.length() != 0) {
 					//JUST finished
 					responseHeaders.put(lastKey, valBuilder.toString());
 					lastKey = null;
 					valBuilder.delete(0, valBuilder.length());
-				} else if(lastKey == null) {
+				} else if (lastKey == null) {
 					//No key and no value, this is the blank line before the body
 					//Read next newline char to finish line
 					input.read();
 					break;
 				}
-			} else if(curChar == '\n') {
+			} else if (curChar == '\n') {
 				//Real end of line, ignore
 			} else {
 				//Currently building something
 				valBuilder.append(curChar);
 			}
 		}
-		
+
 		return responseHeaders;
 	}
 }
