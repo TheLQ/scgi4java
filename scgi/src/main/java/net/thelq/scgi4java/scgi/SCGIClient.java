@@ -23,18 +23,23 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.NonNull;
+import javax.annotation.Nonnull;
 
 /**
  *
  * @author Leon
  */
 public class SCGIClient {
-	public static String makeRequest(@NonNull String body) {
+	public static String makeRequest(@Nonnull String body) {
 		return makeRequest(body, Collections.EMPTY_MAP);
 	}
 
-	public static String makeRequest(@NonNull String body, @NonNull Map<String, String> header) {
+	public static String makeRequest(@Nonnull String body, @Nonnull Map<String, String> header) {
+		if (body == null)
+			throw new NullPointerException("body cannot be null");
+		if (header == null)
+			throw new NullPointerException("header cannot be null");
+
 		//Start building request with required SCGI headers
 		StringBuilder req = new StringBuilder()
 				.append(makeRequestHeader("CONTENT_LENGTH", Integer.toString(body.length())))
@@ -54,6 +59,11 @@ public class SCGIClient {
 	}
 
 	protected static String makeRequestHeader(String key, String value) {
+		if (key == null)
+			throw new NullPointerException("key cannot be null");
+		if (value == null)
+			throw new NullPointerException("value cannot be null");
+		
 		return key + "\0" + value + "\0";
 	}
 
@@ -62,6 +72,11 @@ public class SCGIClient {
 	}
 
 	public static Map<String, String> parseResponse(InputStream input, Charset charset) throws IOException {
+		if (input == null)
+			throw new NullPointerException("input cannot be null");
+		if (charset == null)
+			throw new NullPointerException("charset cannot be null");
+		
 		Map<String, String> responseHeaders = new HashMap<String, String>();
 
 		StringBuilder valBuilder = new StringBuilder();

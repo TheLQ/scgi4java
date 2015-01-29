@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.Charset;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcRequest;
 import org.apache.xmlrpc.client.XmlRpcClient;
@@ -38,7 +37,6 @@ import org.xml.sax.SAXException;
  *
  * @author Leon
  */
-@Slf4j
 public class XmlRpcScgiTransport extends XmlRpcStreamTransport {
 	protected final Charset charset;
 	protected Socket rtSocket;
@@ -66,21 +64,17 @@ public class XmlRpcScgiTransport extends XmlRpcStreamTransport {
 		pWriter.write(reqOutput);
 
 		//Write SCGI request to socket
-		log.debug("Writing SCGI request");
 		OutputStreamWriter rtWrite = new OutputStreamWriter(rtSocket.getOutputStream());
 		rtWrite.write(SCGIClient.makeRequest(reqOutput.toString()));
 		rtWrite.flush();
-		log.debug("Finished writing SCGI request");
 	}
 
 	@Override
 	protected InputStream getInputStream() throws XmlRpcException {
 		try {
-			log.debug("Reading SCGI headers");
 			//Siphon off headers
 			InputStream rtRead = rtSocket.getInputStream();
 			SCGIClient.parseResponse(rtRead);
-			log.debug("Finished reading SCGI headers");
 			return rtRead;
 		} catch (IOException e) {
 			throw new XmlRpcClientException("Could not get input stream", e);
