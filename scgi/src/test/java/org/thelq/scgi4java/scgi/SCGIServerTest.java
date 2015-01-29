@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import sun.misc.IOUtils;
 
 /**
  *
