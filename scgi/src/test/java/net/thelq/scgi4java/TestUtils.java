@@ -15,7 +15,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.thelq.scgi4java.scgi;
+package net.thelq.scgi4java;
 
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;

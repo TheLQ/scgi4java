@@ -15,7 +15,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.thelq.scgi.xmlrpc;
+package net.thelq.scgi4java.xmlrpc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.apache.xmlrpc.client.XmlRpcClientException;
 import org.apache.xmlrpc.client.XmlRpcHttpClientConfig;
 import org.apache.xmlrpc.client.XmlRpcStreamTransport;
 import org.apache.xmlrpc.common.XmlRpcStreamRequestConfig;
-import net.thelq.scgi4java.scgi.SCGIClient;
+import net.thelq.scgi4java.SCGIClient;
 import org.xml.sax.SAXException;
 
 /**

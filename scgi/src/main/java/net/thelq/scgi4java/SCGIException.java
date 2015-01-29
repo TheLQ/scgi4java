@@ -15,31 +15,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.thelq.scgi.xmlrpc;
+package net.thelq.scgi4java;
 
-import java.nio.charset.Charset;
-import org.apache.xmlrpc.client.XmlRpcClient;
-import org.apache.xmlrpc.client.XmlRpcTransport;
-import org.apache.xmlrpc.client.XmlRpcTransportFactoryImpl;
+import java.io.IOException;
 
 /**
  *
  * @author Leon
  */
-public class XmlRPCScgiTransportFactory extends XmlRpcTransportFactoryImpl {
-	protected final Charset charset;
-
-	public XmlRPCScgiTransportFactory(XmlRpcClient pClient) {
-		super(pClient);
-		charset = Charset.defaultCharset();
+public class SCGIException extends IOException {
+	public SCGIException(String message) {
+		super(message);
 	}
 
-	public XmlRPCScgiTransportFactory(XmlRpcClient pClient, Charset charset) {
-		super(pClient);
-		this.charset = charset;
-	}
-
-	public XmlRpcTransport getTransport() {
-		return new XmlRpcScgiTransport(getClient(), charset);
+	public SCGIException(String message, Throwable cause) {
+		super(message, cause);
 	}
 }
