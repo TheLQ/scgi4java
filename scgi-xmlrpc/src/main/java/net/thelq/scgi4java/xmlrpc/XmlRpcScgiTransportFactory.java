@@ -26,19 +26,20 @@ import org.apache.xmlrpc.client.XmlRpcTransportFactoryImpl;
  *
  * @author Leon
  */
-public class XmlRPCScgiTransportFactory extends XmlRpcTransportFactoryImpl {
+public class XmlRpcScgiTransportFactory extends XmlRpcTransportFactoryImpl {
 	protected final Charset charset;
 
-	public XmlRPCScgiTransportFactory(XmlRpcClient pClient) {
+	public XmlRpcScgiTransportFactory(XmlRpcClient pClient) {
 		super(pClient);
 		charset = Charset.defaultCharset();
 	}
 
-	public XmlRPCScgiTransportFactory(XmlRpcClient pClient, Charset charset) {
+	public XmlRpcScgiTransportFactory(XmlRpcClient pClient, Charset charset) {
 		super(pClient);
 		this.charset = charset;
 	}
 
+	@Override
 	public XmlRpcTransport getTransport() {
 		return new XmlRpcScgiTransport(getClient(), charset);
 	}
