@@ -1,0 +1,1 @@
+scgi4java finally provides a standard library for using the [SCGI protocol](http://python.ca/scgi/protocol.txt).
